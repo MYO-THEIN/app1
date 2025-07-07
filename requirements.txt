@@ -1,5 +1,15 @@
 asgiref==3.8.1
+black==25.1.0
+click==8.2.1
+colorama==0.4.6
 Django==5.2.3
-psycopg2==2.9.10  # psycopg2==2.7.7
+mypy_extensions==1.1.0
+packaging==25.0
+pathspec==0.12.1
+platformdirs==4.3.8
+psycopg2==2.9.10
+python-decouple==3.8
+six==1.17.0
 sqlparse==0.5.3
 tzdata==2025.2
+validate_email==1.3
