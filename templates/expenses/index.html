@@ -37,22 +37,22 @@
             <table class="table table-stripped table-hover">
                 <thead>
                     <tr>
-                        <th>Amount ({{ currency }})</th>
+                        <th>Date</th>
                         <th>Category</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th>Amount</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for expense in page_obj%}
+                    {% for expense in page_obj %}
                     <tr>
-                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date }}</td>
                         <td>{{ expense.category }}</td>
                         <td>{{ expense.description }}</td>
-                        <td>{{ expense.date }}</td>
+                        <td>{{ expense.amount | floatformat:0 }}</td>
                         <td>
-                            <a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'edit-expense' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -89,6 +89,7 @@
                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                 </li>
                 {% endif %}
+                
                 {% if page_obj.has_next %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>

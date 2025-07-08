@@ -1,0 +1,1 @@
+console.log("This is the main.js file for app1.");

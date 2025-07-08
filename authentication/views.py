@@ -44,8 +44,8 @@ class RegistrationView(View):
             messages.success(request, 'User Account successfully created. Please check your email to activate your account.')
             return render(request, 'authentication/login.html')
         except Exception as e:
-            messages.error(request, 'An error occurred while creating your account. Please try again later.')
-            return render(request, 'authentication/register.html', context)
+            messages.error(request, f'An error occurred while creating your account: {e}')
+            return render(request, 'authentication/login.html', context)
 
 
 class LoginView(View):
@@ -67,7 +67,7 @@ class LoginView(View):
                     messages.error(request, 'Your account is not active. Please check your email to activate your account.')
                     return render(request, 'authentication/login.html')
             else:
-                messages.error(request, 'Invalid credentials. Try again.')
+                messages.error(request, 'Your credentials are invalid or your account may not active.')
                 return render(request, 'authentication/login.html')
         else:
             messages.error(request, 'Please fill in both fields.')
@@ -83,7 +83,8 @@ class LogoutView(View):
 
 class UserNameValidationView(View):
     def post(self, request):
-        username = request.POST.get('username', '').strip()
+        data = json.loads(request.body)
+        username = data.get('username', '').strip()
         if not username.isalnum():
             return JsonResponse({'username_error': 'Username must be alphanumeric'}, status=400)
         elif User.objects.filter(username=username).exists():
@@ -93,7 +94,8 @@ class UserNameValidationView(View):
 
 class EmailValidationView(View):
     def post(self, request):
-        email = request.POST.get('email', '').strip()
+        data = json.loads(request.body)
+        email = data.get('email', '').strip()
         if not validate_email(email):
             return JsonResponse({'email_error': 'Invalid email format'}, status=400)
         elif User.objects.filter(email=email).exists():

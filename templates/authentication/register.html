@@ -13,6 +13,8 @@
                 <form action="{% url 'register' %}" method="post">
                     {% csrf_token %}
                     {% include 'partials/_messages.html' %}
+
+                    <!-- username -->
                     <div class="form-group">
                         <input 
                             type="text" 
@@ -25,6 +27,8 @@
                     </div>
                     <div class="invalid_feedback invalid-feedback" style="display:none"></div>
                     <p class="text-sm text-success usernameSuccessOutput"></p>
+
+                    <!-- email -->
                     <div class="form-group">
                         <input 
                             type="email" 
@@ -36,6 +40,8 @@
                         />
                     </div>
                     <div class="emailFeedBackArea invalid-feedback" style="display:none"></div>
+
+                    <!-- password -->
                     <div class="form-group">
                         <input 
                             type="password" 
@@ -46,6 +52,7 @@
                         />
                         <small class="float-right py-3 showPasswordToggle">SHOW</small>
                     </div>
+                    
                     <input type="submit" value="Register" class="btn btn-block btn-primary submit-btn" />
                 </form>
             </div>

@@ -15,6 +15,7 @@ account_activation_token = AppTokenGenerator()
 
 
 def send_activation_email(user, request):
+    try: 
         current_site = get_current_site(request)
         email_info = {
             'user': user,
@@ -26,7 +27,7 @@ def send_activation_email(user, request):
             'uidb64': email_info['uid'],
             'token': email_info['token']
         })
-
+        
         email_subject = 'Activate Your Account'
         activate_url = 'https://' + current_site.domain + link
         email_message = EmailMessage(
@@ -35,5 +36,7 @@ def send_activation_email(user, request):
             from_email='noreply@mydomain.com',
             to=[user.email]
         )
-
         email_message.send(fail_silently=False)
+    except Exception as e:
+        print(f"Error sending activation email: {e}")
+        raise e
