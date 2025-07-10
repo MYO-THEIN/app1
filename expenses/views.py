@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .models import Category, Expense
@@ -144,7 +145,44 @@ def search_expenses(request):
     if request.method == 'POST':
         search_str = json.loads(request.body).get('searchText')
         expenses = Expense.objects.filter(date__istartswith=search_str, user=request.user) \
+            | Expense.objects.filter(category__name__icontains=search_str, user=request.user) \
             | Expense.objects.filter(description__icontains=search_str, user=request.user) \
             | Expense.objects.filter(amount__istartswith=search_str, user=request.user)
-        data = expenses.values()
-        return JsonResponse(list(data), safe=False)
+        
+        expenses = expenses.select_related('category')
+
+        data = [{
+            'id': expense.id,
+            'date': expense.date.strftime('%Y-%m-%d'),
+            'category': expense.category.name if expense.category else '',
+            'description': expense.description,
+            'amount': expense.amount
+        } for expense in expenses]
+        return JsonResponse(data, safe=False)
+
+
+def stats(request):
+    return render(request, 'expenses/stats.html')
+
+
+def expense_category_summary(request):
+    todays_date = datetime.date.today()
+    six_months_ago = todays_date - datetime.timedelta(days=30 * 6)
+    expenses = Expense.objects.filter(
+        user=request.user,
+        date__gte=six_months_ago,
+        date__lte=todays_date
+    ).select_related('category')
+
+    # aggregate expenses by category
+    summary = (
+        expenses
+        .values('category__name')
+        .annotate(total=Sum('amount'))
+        .order_by('category__name')
+    )
+    
+    # build the final response
+    response = {item['category__name']: float(item['total']) for item in summary}
+
+    return JsonResponse({'expense_category_data': response}, safe=False)

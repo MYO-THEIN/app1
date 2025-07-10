@@ -5,15 +5,15 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'expenses' %}">Expenses</a>
+                <a href="{% url 'incomes' %}">Incomes</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Add Expenses</li>
+            <li class="breadcrumb-item active" aria-current="page">Add Incomes</li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <form action="{% url 'add-expenses' %}" method="post">
+            <form action="{% url 'add-incomes' %}" method="post">
                 {% include 'partials/_messages.html'%} 
                 {% csrf_token %}
                 <div class="form-group">
@@ -26,10 +26,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Category</label>
-                    <select class="form-control" name="category">
-                        {% for category in categories %}
-                        <option name="category" value="{{ category.name }}">{{ category.name }}</option>
+                    <label for="">Source</label>
+                    <select class="form-control" name="source">
+                        {% for source in sources %}
+                        <option name="source" value="{{ source.name }}">{{ source.name }}</option>
                         {% endfor %}
                     </select>
                 </div>

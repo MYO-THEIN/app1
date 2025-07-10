@@ -8,22 +8,22 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="">Expenses</a>
+                        <a href="">Incomes</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        Expenses
+                        Incomes
                     </li>
                 </ol>
             </nav>
         </div>
         <div class="col-md-2">
-            <a href="{% url 'add-expenses' %}" class="btn btn-primary">Add Expense</a>
+            <a href="{% url 'add-incomes' %}" class="btn btn-primary">Add Income</a>
         </div>
     </div>
 
     <div class="container">
         {% include 'partials/_messages.html' %} 
-        {% if expenses.count %}
+        {% if incomes.count %}
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
@@ -38,21 +38,21 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Category</th>
+                        <th>Source</th>
                         <th>Description</th>
                         <th>Amount</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for expense in page_obj %}
+                    {% for income in page_obj %}
                     <tr>
-                        <td>{{ expense.date }}</td>
-                        <td>{{ expense.category }}</td>
-                        <td>{{ expense.description }}</td>
-                        <td>{{ expense.amount | floatformat:0 }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>{{ income.source }}</td>
+                        <td>{{ income.description }}</td>
+                        <td>{{ income.amount | floatformat:0 }}</td>
                         <td>
-                            <a href="{% url 'edit-expense' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                            <a href="{% url 'edit-income' income.id %}" class="btn btn-secondary btn-sm">Edit</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -67,7 +67,7 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Category</th>
+                        <th>Source</th>
                         <th>Description</th>
                         <th>Amount</th>
                         <th></th>
@@ -104,5 +104,5 @@
     </div>
 </div>
 
-<script src="{% static 'js/searchExpenses.js' %}"></script>
+<script src="{% static 'js/searchIncomes.js' %}"></script>
 {% endblock content %}
